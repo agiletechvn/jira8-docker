@@ -12,9 +12,10 @@ services:
       - MYSQL_ROOT_PASSWORD=tu@chung
 
   jira:
-    image: cptactionhank/atlassian-jira:latest
+    image: cptactionhank/atlassian-jira:8.0.0
     container_name: jira
     volumes:
+      - ./data/jira:/var/atlassian/jira
       - ./crack_jira8/atlassian-extras-3.2.jar:/var/atlassian/jira/WEB-INF/lib/atlassian-extras-3.2.jar
       - ./crack_jira8/atlassian-universal-plugin-manager-plugin-4.0.0-bca9de4189.jar:/var/atlassian/jira/WEB-INF/atlassian-bundled-plugins/atlassian-universal-plugin-manager-plugin-4.0.0-bca9de4189.jar
       - ./lib/mysql-connector-java-5.1.47-bin.jar:/var/atlassian/jira/lib/mysql-connector-java-5.1.47-bin.jar
