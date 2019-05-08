@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.6.36
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    restart: unless-stopped
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=jira
+      - MYSQL_ROOT_PASSWORD=tu@chung
+
+  jira:
+    image: cptactionhank/atlassian-jira:latest
+    container_name: jira
+    volumes:
+      - ./crack_jira8/atlassian-extras-3.2.jar:/var/atlassian/jira/WEB-INF/lib/atlassian-extras-3.2.jar
+      - ./crack_jira8/atlassian-universal-plugin-manager-plugin-4.0.0-bca9de4189.jar:/var/atlassian/jira/WEB-INF/atlassian-bundled-plugins/atlassian-universal-plugin-manager-plugin-4.0.0-bca9de4189.jar
+      - ./lib/mysql-connector-java-5.1.47-bin.jar:/var/atlassian/jira/lib/mysql-connector-java-5.1.47-bin.jar
+    tty: true
+    # environment:
+    #   - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    # ports:
+    #   - 9090:8080
+    # command: /bin/sh
+
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/
